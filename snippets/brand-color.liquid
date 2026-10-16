@@ -1,0 +1,11 @@
+{%- liquid
+  assign chosen = color
+  assign chosen_key = chosen | downcase
+  if chosen == blank or chosen_key == '#2a5bff' or chosen_key == '#ff7e8d'
+    assign chosen = settings.color_accent
+  endif
+  if chosen == blank
+    assign chosen = '#00284E'
+  endif
+  echo chosen
+-%}

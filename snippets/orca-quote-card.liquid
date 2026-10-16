@@ -1,0 +1,64 @@
+{% doc %}
+  Testimonial card used by the dual marquee rows.
+
+  @param {object} block - Testimonial section block
+  @param {boolean} [duplicate] - Decorative copy for a seamless marquee loop
+  @param {boolean} [editable] - When true, exposes the card to the theme editor
+{% enddoc %}
+
+{%- liquid
+  assign rating = block.settings.rating | default: 5 | plus: 0
+  if rating < 1
+    assign rating = 5
+  endif
+  assign author = block.settings.author | default: 'Verified buyer'
+  assign initial = author | slice: 0 | upcase
+-%}
+
+<article
+  class="orca-quote"
+  {% if duplicate %}aria-hidden="true"{% endif %}
+  {% if editable %}{{ block.shopify_attributes }}{% endif %}
+>
+  <div class="orca-quote__stars" {% unless duplicate %}aria-label="{{ 'sections.testimonials.rating' | t: rating: rating }}"{% endunless %}>
+    {%- for i in (1..5) -%}
+      <span class="orca-quote__star{% if i > rating %} orca-quote__star--empty{% endif %}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M12 3.2 14.5 9l6.3.6-4.8 4.1 1.5 6.2L12 16.6 6.5 19.9l1.5-6.2L3.2 9.6 9.5 9 12 3.2z"/>
+        </svg>
+      </span>
+    {%- endfor -%}
+  </div>
+
+  {%- if block.settings.quote != blank -%}
+    <p class="orca-quote__text">{{ block.settings.quote | escape }}</p>
+  {%- endif -%}
+
+  <footer class="orca-quote__person">
+    {%- liquid
+      assign image_alt = author
+      if duplicate
+        assign image_alt = ''
+      endif
+    -%}
+    {%- if block.settings.image != blank -%}
+      {{
+        block.settings.image
+        | image_url: width: 96
+        | image_tag:
+          loading: 'lazy',
+          widths: '48, 96',
+          class: 'orca-quote__avatar',
+          alt: image_alt
+      }}
+    {%- else -%}
+      <span class="orca-quote__avatar orca-quote__avatar--fallback" aria-hidden="true">{{ initial }}</span>
+    {%- endif -%}
+    <span class="orca-quote__meta">
+      <span class="orca-quote__name">{{ author | escape }}</span>
+      {%- if block.settings.role != blank -%}
+        <span class="orca-quote__role">{{ block.settings.role | escape }}</span>
+      {%- endif -%}
+    </span>
+  </footer>
+</article>

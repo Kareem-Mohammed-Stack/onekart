@@ -1,0 +1,95 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="store-policy rte">
+      {%- liquid
+        assign policy_handle = policy.handle
+        if policy_handle == blank
+          assign policy_handle = request.path | split: '/' | last
+        endif
+        assign policy_title = policy.title
+        if policy_title == blank
+          assign policy_title = policy_handle | replace: '-', ' ' | capitalize
+        endif
+      -%}
+      <h1 class="store-policy__title">{{ policy_title }}</h1>
+      {% render 'store-policies', handle: policy_handle %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .store-policy {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .store-policy__title {
+    margin: 0 0 2.4rem;
+    letter-spacing: -0.04em;
+  }
+
+  .store-policy h2 {
+    margin: 2.8rem 0 0.8rem;
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+  }
+
+  .store-policy p {
+    margin: 0 0 1.4rem;
+    line-height: 1.7;
+  }
+
+  .store-policy a {
+    color: var(--color-primary);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Policy",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ]
+}
+{% endschema %}

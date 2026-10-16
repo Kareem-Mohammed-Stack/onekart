@@ -1,0 +1,299 @@
+{{ 'orca-collections.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #shopify-section-{{ section.id }} {
+    --orca-cats-cols: {{ section.settings.columns_desktop }};
+    --orca-cats-cols-mobile: {{ section.settings.columns_mobile }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
+  assign show_mobile_slider = false
+  if section.settings.swipe_on_mobile and section.blocks.size > columns_mobile_int
+    assign show_mobile_slider = true
+  endif
+  assign used_handles = ','
+-%}
+
+<div class="orca-cats color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width isolate section-{{ section.id }}-padding">
+    {%- if section.settings.eyebrow != blank or section.settings.title != blank or section.settings.description != blank -%}
+      <header class="orca-cats__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="orca-cats__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 id="SectionHeading-{{ section.id }}" class="orca-cats__title {{ section.settings.heading_size }}">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="orca-cats__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <slider-component class="slider-mobile-gutter">
+      <ul
+        class="orca-cats__grid{% if show_mobile_slider %} slider slider--tablet grid--peek{% endif %}"
+        id="Slider-{{ section.id }}"
+        role="list"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_collection = block.settings.collection
+            if card_collection != blank and card_collection.handle != blank
+              assign used_handles = used_handles | append: card_collection.handle | append: ','
+            else
+              assign card_collection = nil
+              for collection in collections
+                assign needle = ',' | append: collection.handle | append: ','
+                if used_handles contains needle
+                elsif collection.handle == 'frontpage'
+                elsif collection.all_products_count < 1
+                else
+                  assign card_collection = collection
+                  assign used_handles = used_handles | append: collection.handle | append: ','
+                  break
+                endif
+              endfor
+            endif
+          -%}
+          <li
+            id="Slide-{{ section.id }}-{{ forloop.index }}"
+            class="orca-cats__item{% if show_mobile_slider %} slider__slide{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {% render 'orca-collection-card', card_collection: card_collection, index: forloop.index %}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if show_mobile_slider -%}
+        <div class="slider-buttons no-js-hidden large-up-hide">
+          <button
+            type="button"
+            class="slider-button slider-button--prev"
+            name="previous"
+            aria-label="{{ 'general.slider.previous_slide' | t }}"
+          >
+            {% render 'icon-caret' %}
+          </button>
+          <button
+            type="button"
+            class="slider-button slider-button--next"
+            name="next"
+            aria-label="{{ 'general.slider.next_slide' | t }}"
+          >
+            {% render 'icon-caret' %}
+          </button>
+        </div>
+      {%- endif -%}
+    </slider-component>
+
+    {%- if section.settings.show_view_all -%}
+      <p class="orca-cats__all">
+        <a
+          href="{{ routes.collections_url }}"
+          class="orca-cats__all-link"
+          id="ViewAllButton-{{ section.id }}"
+        >
+          {{- 'sections.collection_list.view_all' | t -}}
+          <span aria-hidden="true"> →</span>
+        </a>
+      </p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.collection-list.name",
+  "tag": "section",
+  "class": "section section-collection-list",
+  "max_blocks": 15,
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.popup"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by category"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Explore the store",
+      "label": "t:sections.collection-list.settings.title.label"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Home, beauty, family, and everyday essentials — curated."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.collection-list.settings.columns_desktop.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "Card colors"
+    },
+    {
+      "type": "color",
+      "id": "gradient_from",
+      "label": "Gradient start",
+      "default": "#00284E"
+    },
+    {
+      "type": "color",
+      "id": "gradient_mid",
+      "label": "Gradient middle",
+      "default": "#FF6E04"
+    },
+    {
+      "type": "color",
+      "id": "gradient_to",
+      "label": "Gradient end",
+      "default": "#FFB366"
+    },
+    {
+      "type": "color",
+      "id": "pedestal",
+      "label": "Pedestal",
+      "default": "#FF6E04"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "t:sections.collection-list.settings.show_view_all.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection-list.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__2.label"
+        }
+      ],
+      "default": "1",
+      "label": "t:sections.collection-list.settings.columns_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.collection-list.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "t:sections.collection-list.blocks.featured_collection.name",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.collection-list.blocks.featured_collection.settings.collection.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.collection-list.presets.name",
+      "blocks": [
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

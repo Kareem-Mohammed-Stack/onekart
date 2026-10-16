@@ -1,0 +1,96 @@
+/* Designed card photo already contains the One Kart circle. Stage only uses brand colors. */
+.product-card-wrapper .onekart-stage {
+  background: #00284e;
+}
+
+.product-card-wrapper .onekart-stage .media {
+  z-index: 1;
+  background: transparent;
+}
+
+.product-card-wrapper .onekart-stage .media img {
+  object-fit: contain !important;
+  object-position: center center;
+  box-sizing: border-box;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+}
+
+.product-card-wrapper .onekart-stage__mark {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 20px);
+  padding: 3px 8px 3px 3px;
+  border-radius: 999px;
+  background: #00284e;
+  box-shadow: 0 0 0 1.5px #ff6e04;
+  pointer-events: none;
+}
+
+.product-card-wrapper .onekart-stage__mark img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.product-card-wrapper .onekart-stage__mark span {
+  color: #ff6e04;
+  font-family: var(--font-heading-family);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.product-card-wrapper:hover .onekart-stage .media.media--hover-effect > img.onekart-card-photo {
+  opacity: 1;
+}
+
+.onekart-stage--thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #00284e;
+}
+
+.onekart-stage--thumb .predictive-search__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  box-sizing: border-box;
+  padding: 0;
+  background: #00284e;
+}
+
+@media screen and (max-width: 749px) {
+  .product-card-wrapper .onekart-stage__mark {
+    top: 8px;
+    left: 8px;
+    gap: 4px;
+  }
+
+  .product-card-wrapper .onekart-stage__mark img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .product-card-wrapper .onekart-stage__mark span {
+    font-size: 11px;
+  }
+}

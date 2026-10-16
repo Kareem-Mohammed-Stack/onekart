@@ -1,0 +1,9 @@
+{% comment %}
+  Renders the first five words of a product title for card display.
+  Full titles remain unchanged in Shopify admin.
+
+  Accepts:
+  - title: {String} Product title
+{% endcomment %}
+
+{{- title | strip | truncatewords: 5, '' | escape -}}

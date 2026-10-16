@@ -1,0 +1,487 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #shopify-section-{{ section.id }} {
+    --orca-contact-accent: {% render 'brand-color', color: section.settings.accent %};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="orca-contact color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width isolate section-{{ section.id }}-padding">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.sub_heading != blank -%}
+      <header class="orca-contact__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="orca-contact__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h1 class="orca-contact__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h1>
+        {%- else -%}
+          <h1 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h1>
+        {%- endif -%}
+        {%- if section.settings.sub_heading != blank -%}
+          <div class="orca-contact__intro rte">{{ section.settings.sub_heading }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- liquid
+      assign contact_email = settings.contact_email | default: 'standerdmail@gmail.com'
+    -%}
+    <article class="orca-contact__card">
+      <p class="orca-contact__mark" aria-hidden="true">✉️</p>
+      <h2 class="orca-contact__card-title">Contact Us</h2>
+      <p class="orca-contact__lead">Contact us at</p>
+      <p class="orca-contact__email">
+        <a href="mailto:{{ contact_email }}">
+          <strong>{{ contact_email }}</strong>
+        </a>
+      </p>
+      <a class="button button--primary orca-contact__button" href="mailto:{{ contact_email }}">
+        Email Us
+      </a>
+      <p class="orca-contact__note">Our support team is available 24/7 and will get back to you as soon as possible.</p>
+    </article>
+
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .orca-contact {
+    --orca-contact-accent: #00284E;
+  }
+
+  .orca-contact__header {
+    max-width: 46rem;
+    margin: 0 auto 3.2rem;
+    text-align: center;
+  }
+
+  .orca-contact__eyebrow {
+    display: block;
+    margin: 0 0 0.8rem;
+    color: var(--orca-contact-accent, #00284E);
+    font-size: 1.2rem;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .orca-contact__card {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 4rem 2.4rem;
+    text-align: center;
+    background: rgb(var(--color-background));
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: var(--radius-lg, 1.6rem);
+    box-shadow: var(--shadow-soft, 0 8px 32px rgba(var(--color-foreground), 0.07));
+  }
+
+  .orca-contact__mark {
+    margin: 0 0 1.2rem;
+    font-size: 2.8rem;
+    line-height: 1;
+  }
+
+  .orca-contact__card-title {
+    margin: 0 0 1.6rem;
+    font-size: clamp(2.8rem, 4vw, 4rem);
+    letter-spacing: -0.04em;
+  }
+
+  .orca-contact__lead,
+  .orca-contact__note {
+    margin: 0;
+    color: rgba(var(--color-foreground), 0.75);
+    font-size: 1.6rem;
+    line-height: 1.6;
+  }
+
+  .orca-contact__email {
+    margin: 0.8rem 0 1.6rem;
+    font-size: 1.8rem;
+  }
+
+  .orca-contact__email a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .orca-contact__button {
+    margin: 0 0 1.6rem;
+    min-width: 16rem;
+  }
+
+  .orca-contact__title {
+    margin: 0;
+    letter-spacing: -0.04em;
+  }
+
+  .orca-contact__intro {
+    margin: 1rem 0 0;
+    color: rgba(var(--color-foreground), 0.62);
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+
+  .orca-contact__intro > *:first-child {
+    margin-top: 0;
+  }
+
+  .orca-contact__intro > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .orca-contact__form {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 2.4rem 2rem;
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: 28px;
+    background: rgb(var(--color-background));
+    box-shadow: 0 18px 40px rgba(var(--color-foreground), 0.06);
+  }
+
+  .orca-contact__fields {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .orca-contact__message {
+    grid-column: 1 / -1;
+  }
+
+  .orca-contact .field {
+    margin: 0;
+  }
+
+  .orca-contact .field:before,
+  .orca-contact .field:after {
+    display: none;
+  }
+
+  .orca-contact .field__input,
+  .orca-contact .field__input:hover,
+  .orca-contact .field__input:focus,
+  .orca-contact .text-area {
+    min-height: 5.6rem;
+    padding: 1.8rem 1.8rem 0.8rem;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    border-radius: 16px;
+    background: rgba(var(--color-foreground), 0.035);
+    box-shadow: none;
+  }
+
+  .orca-contact .text-area {
+    min-height: 14rem;
+    padding-top: 2.4rem;
+    resize: vertical;
+  }
+
+  .orca-contact .field__input:focus {
+    border-color: var(--orca-contact-accent, #00284E);
+    background: rgb(var(--color-background));
+  }
+
+  .orca-contact .field__label {
+    left: 1.8rem;
+    color: rgba(var(--color-foreground), 0.55);
+  }
+
+  .orca-contact__status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 0 0 1.8rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: 16px;
+    font-size: 1.5rem;
+  }
+
+  .orca-contact__status--success {
+    background: rgba(42, 91, 255, 0.08);
+  }
+
+  .orca-contact__status--error {
+    background: rgba(var(--color-foreground), 0.05);
+  }
+
+  .orca-contact__status p,
+  .orca-contact__status ul {
+    margin: 0;
+  }
+
+  .orca-contact__actions {
+    margin-top: 1.8rem;
+  }
+
+  .orca-contact__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 5.2rem;
+    padding: 0 2.4rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--orca-contact-accent, #00284E);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  }
+
+  .orca-contact__submit:hover,
+  .orca-contact__submit:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(42, 91, 255, 0.28);
+  }
+
+  @media screen and (min-width: 750px) {
+    .orca-contact__form {
+      padding: 3.2rem;
+    }
+
+    .orca-contact__fields {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.popup"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Contact"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Get in touch",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "text_alignment",
+      "id": "heading_align",
+      "label": "Alignment",
+      "default": "center"
+    },
+    {
+      "type": "text_alignment",
+      "id": "heading_align_mobile",
+      "label": "Alignment – Mobile",
+      "default": "center"
+    },
+    {
+      "type": "richtext",
+      "id": "sub_heading",
+      "default": "<p>Questions about an order or a product? Send a note and we’ll get back to you.</p>",
+      "label": "Description"
+    },
+    {
+      "type": "text_alignment",
+      "id": "sub_heading_align",
+      "label": "Alignment",
+      "default": "left"
+    },
+    {
+      "type": "text_alignment",
+      "id": "sub_heading_align_mobile",
+      "label": "Alignment – Mobile",
+      "default": "left"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#00284E"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "name",
+      "name": "Name",
+      "limit": 1
+    },
+    {
+      "type": "email",
+      "limit": 1,
+      "name": "Email"
+    },
+    {
+      "type": "textarea",
+      "limit": 1,
+      "name": "Text Box"
+    },
+    {
+      "type": "tel",
+      "limit": 1,
+      "name": "Telephone"
+    },
+    {
+      "type": "date",
+      "limit": 1,
+      "name": "Date"
+    },
+    {
+      "type": "text",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text_label",
+          "label": "Placeholder text",
+          "default": "Write something"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Name",
+          "default": "Text",
+          "info": "Only you can see this when recieve form"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "name": "Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "select_id",
+          "label": "Name",
+          "default": "select",
+          "info": "Only you can see this when recieve form"
+        },
+        {
+          "type": "text",
+          "id": "option_label",
+          "label": "Placeholder text",
+          "default": "Select your option"
+        },
+        {
+          "type": "text",
+          "id": "option_1",
+          "label": "Option 1",
+          "default": "Option 1"
+        },
+        {
+          "type": "text",
+          "id": "option_2",
+          "label": "Option 2",
+          "default": "Option 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_option_3",
+          "default": false,
+          "label": "Show Option 3"
+        },
+        {
+          "type": "text",
+          "id": "option_3",
+          "label": "Option 3",
+          "default": "Option 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_option_4",
+          "default": false,
+          "label": "Show Option 4"
+        },
+        {
+          "type": "text",
+          "id": "option_4",
+          "label": "Option 4",
+          "default": "Option 4"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name",
+      "blocks": [
+        { "type": "name" },
+        { "type": "email" },
+        { "type": "tel" },
+        { "type": "textarea" }
+      ]
+    }
+  ]
+}
+{% endschema %}

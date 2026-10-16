@@ -1,0 +1,227 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  #shopify-section-{{ section.id }} {
+    --orca-faq-accent: {% render 'brand-color', color: section.settings.accent %};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="orca-faq color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width isolate section-{{ section.id }}-padding">
+    {%- if section.settings.eyebrow != blank or section.settings.title != blank or section.settings.description != blank -%}
+      <header class="orca-faq__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="orca-faq__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 id="FaqHeading-{{ section.id }}" class="orca-faq__title {{ section.settings.heading_size }}">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="orca-faq__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <orca-faq-list class="orca-faq__list">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.question != blank -%}
+          <details
+            class="orca-faq__item"
+            id="Faq-{{ section.id }}-{{ block.id }}"
+            {% if section.settings.open_first and forloop.first %}open{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <summary class="orca-faq__summary">
+              <span class="orca-faq__question">{{ block.settings.question | escape }}</span>
+              <span class="orca-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="orca-faq__panel">
+              <div class="orca-faq__answer rte">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </orca-faq-list>
+  </div>
+</div>
+
+{{ 'orca-faq.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'orca-faq.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "t:sections.orca-faq.name",
+  "tag": "section",
+  "class": "section section-orca-faq",
+  "max_blocks": 16,
+  "disabled_on": {
+    "groups": ["header", "custom.popup"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Help"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Questions, answered"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Shipping, returns, and ordering — the essentials."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first question",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-1"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#00284E"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "t:sections.orca-faq.blocks.question.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long does shipping take?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Orders are delivered in 3–5 days. You will receive a tracking link by email when the order is on the way.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.orca-faq.presets.name",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders are delivered in 3–5 days. You will receive a tracking link by email when the order is on the way.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Unused items can be returned within 14 days of delivery. Email us with your order number and we will walk you through the return.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes. We deliver to most countries. Duties and taxes may apply depending on your destination and will be shown at checkout when available.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "<p>A tracking link is emailed as soon as your order ships. You can also find it in your account under order history.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Which payment methods do you accept?",
+            "answer": "<p>We accept major cards, Shop Pay, PayPal, Apple Pay, and Google Pay. Available methods can vary by country.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Can I change or cancel an order?",
+            "answer": "<p>If the order hasn’t shipped yet, contact us and we’ll do our best to update or cancel it. Once it’s on the way, you’ll need to wait for delivery or start a return.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

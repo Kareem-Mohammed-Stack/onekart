@@ -1,0 +1,199 @@
+.orca-quotes__header {
+    max-width: 46rem;
+    margin: 0 auto 3.2rem;
+    text-align: center;
+  }
+
+  .orca-quotes__eyebrow {
+    display: block;
+    margin: 0 0 0.8rem;
+    color: var(--orca-quote-accent, var(--color-accent));
+    font-size: 1.2rem;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .orca-quotes__title {
+    margin: 0;
+    letter-spacing: -0.04em;
+  }
+
+  .orca-quotes__description {
+    margin: 1rem 0 0;
+    color: rgba(var(--color-foreground), 0.62);
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+
+  .orca-quotes__marquees {
+    display: grid;
+    gap: 1.4rem;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .orca-quotes__row {
+    overflow: hidden;
+  }
+
+  .orca-quotes__track {
+    display: flex;
+    width: max-content;
+    animation: orca-quotes-marquee var(--orca-quote-speed, 42s) linear infinite;
+    will-change: transform;
+  }
+
+  .orca-quotes__row--rtl .orca-quotes__track {
+    animation-name: orca-quotes-marquee-reverse;
+  }
+
+  .orca-quotes__row:hover .orca-quotes__track,
+  .orca-quotes__row:focus-within .orca-quotes__track {
+    animation-play-state: paused;
+  }
+
+  .orca-quotes__set {
+    display: flex;
+    gap: 1.4rem;
+    padding-right: 1.4rem;
+  }
+
+  .orca-quote {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: min(78vw, 34rem);
+    padding: 2rem;
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: 22px;
+    background: rgb(var(--color-background));
+    box-shadow: 0 12px 30px rgba(var(--color-foreground), 0.05);
+  }
+
+  .orca-quote__stars {
+    display: flex;
+    gap: 0.2rem;
+    color: var(--orca-quote-accent, var(--color-accent));
+  }
+
+  .orca-quote__star {
+    display: inline-flex;
+  }
+
+  .orca-quote__star--empty {
+    opacity: 0.22;
+  }
+
+  .orca-quote__text {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+  }
+
+  .orca-quote__person {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .orca-quote__avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+
+  .orca-quote__avatar--fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--orca-quote-accent, var(--color-accent));
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .orca-quote__meta {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .orca-quote__name {
+    font-size: 1.4rem;
+    font-weight: 650;
+  }
+
+  .orca-quote__role {
+    color: rgba(var(--color-foreground), 0.55);
+    font-size: 1.3rem;
+  }
+
+  @keyframes orca-quotes-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes orca-quotes-marquee-reverse {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .orca-quote {
+      width: 38rem;
+      padding: 2.4rem;
+    }
+
+    .orca-quote__text {
+      font-size: 1.7rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orca-quotes__marquees {
+      mask-image: none;
+      -webkit-mask-image: none;
+      gap: 1.6rem;
+      padding: 0 1.5rem;
+    }
+
+    .orca-quotes__row {
+      overflow: visible;
+    }
+
+    .orca-quotes__track {
+      display: contents;
+      animation: none;
+    }
+
+    .orca-quotes__set {
+      display: contents;
+    }
+
+    .orca-quotes__set[aria-hidden='true'] {
+      display: none;
+    }
+
+    .orca-quotes__row--ltr,
+    .orca-quotes__row--rtl {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .orca-quote {
+      width: 100%;
+    }
+  }

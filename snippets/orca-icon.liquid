@@ -1,0 +1,24 @@
+{% comment %}Shared header icons. Decorative; the surrounding control provides its accessible name.{% endcomment %}
+<svg class="icon icon-{{ icon }} orca-icon{% if class != blank %} {{ class }}{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {%- case icon -%}
+    {%- when 'hamburger' -%}
+      <path d="M4 7h16M4 12h12M4 17h16"/>
+    {%- when 'close' -%}
+      <path d="m6 6 12 12M6 18 18 6"/>
+    {%- when 'search' -%}
+      <circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/>
+    {%- when 'account' -%}
+      <circle cx="12" cy="8" r="3.5"/><path d="M4.5 20v-1.5a7.5 7.5 0 0 1 15 0V20"/>
+    {%- when 'trolley' -%}
+      <path d="M2.5 4h2.3l2.5 11.1a1.5 1.5 0 0 0 1.5 1.2h9.5M5.5 7h15l-1.8 6.5H7M10 7l.6 6.5M15.5 7l-.5 6.5"/>
+      <circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/>
+    {%- when 'arrow-right' -%}
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    {%- when 'facebook' -%}
+      <path fill="currentColor" stroke="none" d="M14 8.2h2.2V5.8H14c-1.9 0-3.2 1.3-3.2 3.3V11H8.6v2.4h2.2V20h2.6v-6.6h2.2l.5-2.4h-2.7V9.3c0-.5.4-.9.9-.9H14Z"/>
+    {%- when 'instagram' -%}
+      <rect x="3.6" y="3.6" width="16.8" height="16.8" rx="5"/>
+      <circle cx="12" cy="12" r="3.6"/>
+      <circle cx="16.7" cy="7.3" r="0.9" fill="currentColor" stroke="none"/>
+  {%- endcase -%}
+</svg>

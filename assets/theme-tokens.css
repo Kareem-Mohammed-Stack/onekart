@@ -1,0 +1,65 @@
+/*
+  Master template tokens.
+
+  Change a store's brand in one place:
+  config/settings_schema.json → Brand
+  --color-primary, --color-secondary, --color-accent are printed in layout/theme.liquid
+
+  Header            sections/header.liquid
+                    assets/orca-header.css
+                    assets/orca-header.js
+  Hero              sections/slideshow.liquid
+                    sections/image-banner.liquid
+  Collections       sections/collection-list.liquid
+                    assets/orca-collections.css
+                    snippets/orca-collection-card.liquid
+                    snippets/card-collection.liquid
+  Product grid      sections/featured-collection.liquid
+  Featured product  sections/featured-product.liquid
+                    assets/orca-featured.css
+  Main product      sections/main-product.liquid
+                    assets/section-main-product.css
+  Product card      snippets/card-product.liquid
+                    assets/component-card.css
+  Testimonials      sections/orca-testimonials.liquid
+                    assets/orca-testimonials.css
+  FAQ               sections/orca-faq.liquid
+                    assets/orca-faq.css
+                    assets/orca-faq.js
+  Footer            sections/footer.liquid
+                    assets/orca-footer.css
+  Global CSS        assets/theme-tokens.css
+                    assets/base.css
+  Global JS         assets/global.js
+                    assets/constants.js
+  Cart              sections/cart-drawer.liquid
+                    assets/cart-notification.js
+  Settings          config/settings_schema.json
+                    config/settings_data.json
+*/
+
+:root {
+  --font-size-small: 1.2rem;
+  --font-size-label: 1.4rem;
+  --font-size-body: 1.6rem;
+  --font-size-h3: 2rem;
+  --font-size-h2: 2.8rem;
+  --font-size-h1: 4rem;
+
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
+
+  --space-1: 0.4rem;
+  --space-2: 0.8rem;
+  --space-3: 1.2rem;
+  --space-4: 1.6rem;
+  --space-5: 2.4rem;
+  --space-6: 3.2rem;
+  --space-7: 4.8rem;
+
+  --shadow-soft: 0 8px 32px rgba(var(--color-foreground), 0.07);
+  --transition-fast: 180ms ease;
+  --transition-base: 240ms ease;
+  --container-width: var(--page-width);
+}

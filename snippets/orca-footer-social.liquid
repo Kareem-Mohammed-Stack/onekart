@@ -1,0 +1,37 @@
+{% doc %}
+  Facebook and Instagram buttons for the footer.
+
+  @param {string} [facebook] - Facebook profile URL
+  @param {string} [instagram] - Instagram profile URL
+{% enddoc %}
+
+{%- if facebook != blank or instagram != blank -%}
+  <ul class="orca-foot__social" role="list">
+    {%- if facebook != blank -%}
+      <li>
+        <a
+          href="{{ facebook }}"
+          class="orca-foot__social-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {% render 'icon-facebook' %}
+          <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if instagram != blank -%}
+      <li>
+        <a
+          href="{{ instagram }}"
+          class="orca-foot__social-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {% render 'icon-instagram' %}
+          <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+{%- endif -%}
